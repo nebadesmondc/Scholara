@@ -1,0 +1,3 @@
+# This directory contains database initialization scripts
+# Scripts are executed in alphabetical order when the container starts
+# Example: 01-create-schemas.sql, 02-seed-data.sql

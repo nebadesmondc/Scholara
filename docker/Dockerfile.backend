@@ -1,0 +1,52 @@
+# Scholara Backend Dockerfile
+# Multi-stage build for optimal image size
+
+# ============================================
+# Stage 1: Build
+# ============================================
+FROM eclipse-temurin:25-jdk-alpine AS build
+
+WORKDIR /app
+
+# Copy Maven wrapper and pom.xml
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+
+# Download dependencies (cached layer)
+RUN ./mvnw dependency:go-offline -B
+
+# Copy source code
+COPY src src
+
+# Build application
+RUN ./mvnw package -DskipTests
+
+# ============================================
+# Stage 2: Runtime
+# ============================================
+FROM eclipse-temurin:25-jre-alpine AS runtime
+
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup -S scholara && adduser -S scholara -G scholara
+USER scholara
+
+# Copy built artifact
+COPY --from=build /app/target/*.jar app.jar
+
+# JVM configuration for containers
+ENV JAVA_OPTS="-XX:+UseContainerSupport \
+               -XX:MaxRAMPercentage=75.0 \
+               -XX:InitialRAMPercentage=50.0 \"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+    CMD wget -q --spider http://localhost:8080/actuator/health || exit 1
+
+# Expose port
+EXPOSE 8080
+
+# Run application
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

@@ -1,0 +1,68 @@
+# Scholara Development Environment
+# Usage: docker-compose up -d
+
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: scholara-postgres
+    environment:
+      POSTGRES_DB: scholara
+      POSTGRES_USER: scholara
+      POSTGRES_PASSWORD: scholara
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scholara"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scholara-network
+
+  # Backend Application (placeholder - build required)
+  # backend:
+  #   build:
+  #     context: ../backend
+  #     dockerfile: ../docker/Dockerfile.backend
+  #   container_name: scholara-backend
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: docker
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #     DB_NAME: scholara
+  #     DB_USERNAME: scholara
+  #     DB_PASSWORD: scholara
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   networks:
+  #     - scholara-network
+
+  # Frontend Application (placeholder - build required)
+  # frontend:
+  #   build:
+  #     context: ../frontend
+  #     dockerfile: ../docker/Dockerfile.frontend
+  #   container_name: scholara-frontend
+  #   ports:
+  #     - "4200:80"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - scholara-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  scholara-network:
+    driver: bridge
