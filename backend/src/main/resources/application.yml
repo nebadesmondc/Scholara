@@ -15,14 +15,49 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   modulith:
     events:
       republish-outstanding-events-on-restart: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
 server:
   port: 8091
+  servlet:
+    context-path: /api
+
+# Scholara Security Configuration
+scholara:
+  jwt:
+    secret: ${JWT_SECRET}
+    access-token-expiration: 15m
+    refresh-token-expiration: 7d
+
+  cookie:
+    secure: ${COOKIE_SECURE:false}
+    same-site: Lax
+    access-token-max-age: 900
+    refresh-token-max-age: 604800
+
+  oauth2:
+    frontend-redirect-uri: ${FRONTEND_URL:http://localhost:4200}
 
 management:
   endpoints:
@@ -35,5 +70,11 @@ management:
 
 logging:
   level:
-    com.scholara: INFO
+    com.scholara: DEBUG
+    com.scholara.identity.infrastructure.oauth2: DEBUG
+    com.scholara.identity.infrastructure.security: DEBUG
     org.springframework.modulith: INFO
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: TRACE
+    org.springframework.security.oauth2.client: TRACE
+    org.springframework.web: DEBUG

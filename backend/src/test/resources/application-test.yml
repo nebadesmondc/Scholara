@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-client-id
+            client-secret: test-client-secret
+
+scholara:
+  jwt:
+    secret: 6yB+7S2vN9pX4qR5tW8zB3mE6nJ8kL1uP4sV7xY0zB2=
+    access-token-expiration: 15m
+    refresh-token-expiration: 7d
+
+  cookie:
+    secure: false
+    same-site: Lax
+    access-token-max-age: 900
+    refresh-token-max-age: 604800
+
+  oauth2:
+    frontend-redirect-uri: http://localhost:4200
+
+logging:
+  level:
+    com.scholara: DEBUG
+    org.springframework.security: DEBUG

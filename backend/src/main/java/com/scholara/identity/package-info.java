@@ -19,6 +19,6 @@
  * @see com.scholara.shared
  */
 @org.springframework.modulith.ApplicationModule(
-    allowedDependencies = "shared"
+    allowedDependencies = { "shared::domain", "shared::error", "shared::event", "shared::common" }
 )
 package com.scholara.identity;
