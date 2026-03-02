@@ -1,12 +1,6 @@
 package com.scholara.identity.api;
 
-import com.scholara.identity.domain.exception.AccountDisabledException;
-import com.scholara.identity.domain.exception.EmailAlreadyExistsException;
-import com.scholara.identity.domain.exception.InvalidCredentialsException;
-import com.scholara.identity.domain.exception.InvalidOtpException;
-import com.scholara.identity.domain.exception.InvalidTokenException;
-import com.scholara.identity.domain.exception.TokenExpiredException;
-import com.scholara.identity.domain.exception.UserNotFoundException;
+import com.scholara.identity.domain.exception.*;
 import com.scholara.shared.error.ApiError;
 import com.scholara.shared.error.ErrorCode;
 import com.scholara.shared.error.ScholaraException;
@@ -27,10 +21,19 @@ import java.util.stream.Collectors;
 /**
  * Global exception handler for the identity module API.
  */
-@RestControllerAdvice(basePackages = "com.scholara.identity.api")
+@RestControllerAdvice(basePackages = {"com.scholara.identity.api", "com.scholara.content.api"})
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiError> handleIllegalState(
+            IllegalStateException ex,
+            HttpServletRequest request) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiError.of(ErrorCode.INVALID_REQUEST, ex.getMessage(), request.getRequestURI()));
+    }
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiError> handleInvalidCredentials(

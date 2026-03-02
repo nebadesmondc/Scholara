@@ -13,7 +13,7 @@ This document outlines the phased development plan for the Scholara education pl
 | 0     | Architecture & Planning      | Complete    |
 | 1     | Modulith Skeleton            | Complete    |
 | 2     | Identity & Security          | In Progress |
-| 3     | Academic Content             | Planned     |
+| 3     | Academic Content             | In Progress |
 | 4     | Assessment Engine            | Planned     |
 | 5     | Progress & Analytics         | Planned     |
 | 6     | Observability                | Planned     |
@@ -94,15 +94,15 @@ This document outlines the phased development plan for the Scholara education pl
 
 ## Phase 3: Academic Content
 
-**Status**: Planned
+**Status**: In Progress
 
 ### Deliverables
 
-- [ ] Course entity and CRUD operations
-- [ ] Subject and Lesson management
-- [ ] Content association with instructors
-- [ ] Course publishing workflow
-- [ ] Student enrollment
+- [x] Course entity and CRUD operations
+- [x] Subject and Lesson management
+- [x] Content association with instructors
+- [x] Course publishing workflow
+- [x] Student enrollment
 - [ ] Frontend course browsing
 - [ ] Teacher content management UI
 

@@ -34,5 +34,6 @@ Thumbs.db
 *.pid
 
 # Local configuration
+.env
 application-local.yml
 application-local.properties
