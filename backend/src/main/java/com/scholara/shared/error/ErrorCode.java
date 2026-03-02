@@ -1,11 +1,14 @@
 package com.scholara.shared.error;
 
+import lombok.Getter;
+
 /**
  * Centralized error codes for the Scholara platform.
  *
  * <p>Each error code has a unique identifier and a default message.
  * These codes are used in API responses for consistent error handling.
  */
+@Getter
 public enum ErrorCode {
 
     // Authentication errors (AUTH_xxx)
@@ -29,6 +32,12 @@ public enum ErrorCode {
     USER_NOT_FOUND("USER_001", "User not found"),
     INVALID_PASSWORD("USER_002", "Current password is incorrect"),
 
+    // Content errors (CONT_xxx)
+    COURSE_NOT_FOUND("CONT_001", "Course not found"),
+    SUBJECT_NOT_FOUND("CONT_002", "Subject not found"),
+    LESSON_NOT_FOUND("CONT_003", "Lesson not found"),
+    UNAUTHORIZED_COURSE_ACCESS("CONT_004", "You do not have permission to modify this course"),
+
     // Validation errors (VAL_xxx)
     VALIDATION_ERROR("VAL_001", "Validation failed"),
     INVALID_REQUEST("VAL_002", "Invalid request format"),
@@ -44,11 +53,4 @@ public enum ErrorCode {
         this.defaultMessage = defaultMessage;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getDefaultMessage() {
-        return defaultMessage;
-    }
 }
